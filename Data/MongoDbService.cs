@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using BookList.Entities;
+using MongoDB.Driver;
 
 namespace BookList.Data
 {
@@ -17,5 +18,7 @@ namespace BookList.Data
             var mongoClient = new MongoClient(mongoUrl);
             _database = mongoClient.GetDatabase(mongoUrl.DatabaseName);
         }
+
+        public IMongoDatabase? Database => _database;
     }
 }
