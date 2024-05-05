@@ -1,6 +1,5 @@
 ﻿using BookList.Data;
 using BookList.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
@@ -33,7 +32,7 @@ namespace BookList.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(Book book)
         {
-            await _books?.InsertOneAsync(book);
+            await _books.InsertOneAsync(book);
             return CreatedAtAction(nameof(GetById), new {id = book.Id}, book);
         }
 
@@ -41,11 +40,10 @@ namespace BookList.Controllers
         public async Task<ActionResult> Update(Book book)
         {
             var filter = Builders<Book>.Filter.Eq(x => x.Id, book.Id);
-            //var update = Builders<Book>.Update
-            //    .Set(x => x.Title, book.Title)
-            //    .Set(x => x.Author, book.Author);
-            //await _books.UpdateOneAsync(filter, update);
-            await _books.ReplaceOneAsync(filter, book);
+            var update = Builders<Book>.Update
+                .Set(x => x.Title, book.Title)
+                .Set(x => x.Author, book.Author);
+            await _books.UpdateOneAsync(filter, update);
             return Ok();
         }
 
